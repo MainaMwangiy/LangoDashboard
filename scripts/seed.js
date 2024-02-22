@@ -1,5 +1,5 @@
 const { db } = require('@vercel/postgres');
-const { users } = require('../app/lib/initial.ts');
+const { users, vehicles } = require('../app/lib/initial.ts');
 const bcrypt = require('bcrypt');
 
 async function seedUsers(client) {
@@ -41,11 +41,45 @@ async function seedUsers(client) {
   }
 }
 
+async function seedVehicles(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS vehicles (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description VARCHAR(255) NOT NULL,
+        image_url VARCHAR(255) NOT NULL
+      );
+    `;
+
+    const insertedVehicles = await Promise.all(
+      vehicles.map(async (vehicle) => {
+        return client.sql`
+        INSERT INTO vehicles (id, name, description, image_url)
+        VALUES (${vehicle.id}, ${vehicle.name}, ${vehicle.description}, ${vehicle.image_url} )
+        ON CONFLICT (id) DO NOTHING;
+      `;
+      }),
+    );
+
+
+    return {
+      createTable,
+      vehicles: insertedVehicles,
+    };
+  } catch (error) {
+    console.error('Error seeding vehicles:', error);
+    throw error;
+  }
+}
+
 
 async function main() {
   const client = await db.connect();
 
   await seedUsers(client);
+  await seedVehicles(client);
 
   await client.end();
 }

@@ -7,3 +7,9 @@ export type User = {
     password: string;
     image_url: string;
 };
+export type Vehicle = {
+    id: string;
+    name: string;
+    description: string;
+    image_url: string;
+}

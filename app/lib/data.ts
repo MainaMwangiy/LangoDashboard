@@ -13,3 +13,15 @@ export async function getUser() {
         throw new Error('Failed to fetch all users.');
     }
 }
+
+// export async function getUserVehicleDetails() {
+//     noStore();
+//     try {
+//         const data = await sql<Vehicle>` SELECT * FROM Vehicle INNER JOIN Users ON Users.id = Vehicle.id WHERE  ORDER BY name ASC `;
+//         const users = data.rows;
+//         return users;
+//     } catch (err) {
+//         console.error('Database Error:', err);
+//         throw new Error('Failed to fetch all users.');
+//     }
+// }
