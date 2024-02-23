@@ -14,6 +14,18 @@ export async function getUser() {
     }
 }
 
+export async function createUser() {
+    noStore();
+    try {
+        const data = await sql<User>` SELECT * FROM Users ORDER BY name ASC `;
+        const users = data.rows;
+        return users;
+    } catch (err) {
+        console.error('Database Error:', err);
+        throw new Error('Failed to fetch all users.');
+    }
+}
+
 // export async function getUserVehicleDetails() {
 //     noStore();
 //     try {
