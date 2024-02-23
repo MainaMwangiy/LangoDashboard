@@ -26,6 +26,17 @@ export async function createUser() {
     }
 }
 
+export async function fetchUserById(id: string) {
+    noStore();
+    try {
+        const data = await sql<User>` SELECT * FROM users  WHERE users.id = ${id}; `;
+        return data.rows[0];
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch invoice.');
+    }
+}
+
 // export async function getUserVehicleDetails() {
 //     noStore();
 //     try {

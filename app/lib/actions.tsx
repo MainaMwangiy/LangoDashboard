@@ -29,7 +29,7 @@ export type State = {
 };
 
 const CreateUser = FormSchema.omit({ id: true });
-const UpdateUser = FormSchema.omit({ id: true, date: true });
+const UpdateUser = FormSchema.omit({ id: true, image_url: true });
 
 
 export async function createUser(prevState: State, formData: FormData) {
@@ -70,51 +70,34 @@ export async function createUser(prevState: State, formData: FormData) {
     redirect('/dashboard/users');
 }
 export async function updateUsers(id: string, formData: FormData) {
-    // const { customerId, status } = UpdateUser.parse({
-    //     customerId: formData.get('customerId'),
-    //     amount: formData.get('amount'),
-    //     status: formData.get('status'),
-    // });
+    const { name, email, role, phone, password } = UpdateUser.parse({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        role: formData.get('role'),
+        phone: formData.get('phone'),
+        password: formData.get('password')
+    });
 
     try {
-        // await sql`
-        //   UPDATE Users
-        //   SET customer_id = ${customerId}, status = ${status}
-        //   WHERE id = ${id}
-        // `;
+        await sql`
+          UPDATE users
+          SET name = ${name}, email = ${email}, role = ${role}, phone = ${phone}, password = ${password}
+          WHERE id = ${id}
+        `;
     } catch (error) {
         return { message: 'Database Error: Failed to Update User.' };
     }
 
-    revalidatePath('/dashboard/Users');
-    redirect('/dashboard/Users');
+    revalidatePath('/dashboard/users');
+    redirect('/dashboard/users');
 }
 
 export async function deleteUsers(id: string) {
     try {
-        await sql`DELETE FROM Users WHERE id = ${id}`;
-        revalidatePath('/dashboard/Users');
+        await sql`DELETE FROM users WHERE id = ${id}`;
+        revalidatePath('/dashboard/users');
         return { message: 'Deleted User' };
     } catch (error) {
         return { message: 'Database Error: Failed to Delete User' };
-    }
-}
-
-export async function authenticate(
-    prevState: string | undefined,
-    formData: FormData,
-) {
-    try {
-        // await signIn('credentials', formData);
-    } catch (error) {
-        // if (error instanceof AuthError) {
-        //     switch (error.type) {
-        //         case 'CredentialsSignin':
-        //             return 'Invalid credentials.';
-        //         default:
-        //             return 'Something went wrong.';
-        //     }
-        // }
-        throw error;
     }
 }
