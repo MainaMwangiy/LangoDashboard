@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import bcrypt from 'bcrypt';
 const { v4: uuidv4 } = require('uuid');
 
 const FormSchema = z.object({
@@ -55,11 +56,11 @@ export async function createUser(prevState: State, formData: FormData) {
         };
     }
     const { name, email, role, phone, password, image_url } = validatedFields.data;
-
+    const hashedPassword = await bcrypt.hash(password, 10);
     try {
         await sql`
             INSERT INTO users (id, name, email, role, phone, password, image_url)
-            VALUES (${uuidv4()}, ${name}, ${email}, ${role.toLowerCase()}, ${phone}, ${password}, ${image_url})
+            VALUES (${uuidv4()}, ${name}, ${email}, ${role.toLowerCase()}, ${phone}, ${hashedPassword}, ${image_url})
         `;
     } catch (error) {
         return {
