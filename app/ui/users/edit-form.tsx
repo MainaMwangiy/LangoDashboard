@@ -105,7 +105,7 @@ export default function EditForm({ user }: { user: User }) {
                         name="image_url"
                         type="file"
                         className="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300"
-                        defaultValue={user?.image_url}
+                        defaultValue={``}
                     />
                     {/* <PhotographIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
                 </div>
