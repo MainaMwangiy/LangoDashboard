@@ -47,6 +47,7 @@ async function seedVehicles(client) {
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS vehicles (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
         name VARCHAR(255) NOT NULL,
         description VARCHAR(255) NOT NULL,
         image_url VARCHAR(255) NOT NULL
@@ -56,8 +57,8 @@ async function seedVehicles(client) {
     const insertedVehicles = await Promise.all(
       vehicles.map(async (vehicle) => {
         return client.sql`
-        INSERT INTO vehicles (id, name, description, image_url)
-        VALUES (${vehicle.id}, ${vehicle.name}, ${vehicle.description}, ${vehicle.image_url} )
+        INSERT INTO vehicles (id, user_id, name, description, image_url)
+        VALUES (${vehicle.id}, ${vehicle.user_id}, ${vehicle.name}, ${vehicle.description}, ${vehicle.image_url} )
         ON CONFLICT (id) DO NOTHING;
       `;
       }),

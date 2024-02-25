@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const users = [
     {
-        id: 'c50a2cd7-1cf9-47a2-8688-80c5081c8850',
+        id: 'a9f6ebaf-7b2a-4e39-b780-dd06a5458403',
         name: 'root muri',
         email: 'root@gmail.com',
         role: 'admin',
@@ -11,7 +11,7 @@ const users = [
         image_url: '/users/root.png',
     },
     {
-        id: 'f00782c7-7584-4df1-8024-20f013078c4e',
+        id: '4712fe42-03fa-48d9-b43b-83e5f0fe2e43',
         name: 'maina mwangi',
         email: 'mainamwangi@gmail.com',
         role: 'user',
@@ -41,13 +41,15 @@ const users = [
 
 const vehicles = [
     {
-        id: users[0].id,
+        id: uuidv4(),
+        user_id: users[0].id,
         name: 'Lamborgini Urus',
         description: '2500 cc',
         image_url: '/vehicles/urus.jpg',
     },
     {
-        id: users[1].id,
+        id: uuidv4(),
+        user_id: users[1].id,
         name: 'Subaru Outback',
         description: '6500 cc',
         image_url: '/vehicles/subaru.jpg',
