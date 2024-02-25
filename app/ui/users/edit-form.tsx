@@ -5,6 +5,8 @@ import { updateUsers } from '@/app/lib/actions';
 import { User } from '@/app/lib/definitions';
 
 export default function EditForm({ user }: { user: User }) {
+    console.log("first")
+    console.log("user", user)
     const updateUsersWithId = updateUsers.bind(null, user.id);
     return (
         <form action={updateUsersWithId} className="space-y-6" >
@@ -103,7 +105,7 @@ export default function EditForm({ user }: { user: User }) {
                         name="image_url"
                         type="file"
                         className="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300"
-                    // defaultValue={user.image_url}
+                        defaultValue={user?.image_url}
                     />
                     {/* <PhotographIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
                 </div>

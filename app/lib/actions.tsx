@@ -29,7 +29,7 @@ export type State = {
 };
 
 const CreateUser = FormSchema.omit({ id: true });
-const UpdateUser = FormSchema.omit({ id: true, image_url: true });
+const UpdateUser = FormSchema.omit({ id: true });
 
 
 export async function createUser(prevState: State, formData: FormData) {
@@ -46,7 +46,7 @@ export async function createUser(prevState: State, formData: FormData) {
         role: formData.get('role'),
         phone: formData.get('phone'),
         password: formData.get('password'),
-        image_url: imageName
+        image_url: imageName || null
     });
     if (!validatedFields.success) {
         return {
@@ -70,18 +70,26 @@ export async function createUser(prevState: State, formData: FormData) {
     redirect('/dashboard/users');
 }
 export async function updateUsers(id: string, formData: FormData) {
-    const { name, email, role, phone, password } = UpdateUser.parse({
+    const imageFile = formData.get('image_url');
+    let imageName;
+    if (imageFile && imageFile instanceof File) {
+        imageName = imageFile?.name;
+        imageName = `/users/${imageName}`
+    }
+
+    const { name, email, role, phone, password, image_url } = UpdateUser.parse({
         name: formData.get('name'),
         email: formData.get('email'),
         role: formData.get('role'),
         phone: formData.get('phone'),
-        password: formData.get('password')
+        password: formData.get('password'),
+        image_url: imageName || null
     });
 
     try {
         await sql`
           UPDATE users
-          SET name = ${name}, email = ${email}, role = ${role}, phone = ${phone}, password = ${password}
+          SET name = ${name}, email = ${email}, role = ${role}, phone = ${phone}, password = ${password}, image_url =${image_url}
           WHERE id = ${id}
         `;
     } catch (error) {
